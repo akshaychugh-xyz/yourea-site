@@ -170,8 +170,8 @@ h1 .hi { color: var(--mint); font-style: normal; }
 .cc-dots button { width: 7px; height: 7px; border-radius: 99px; border: 0; padding: 0; background: rgba(255,255,255,.22); cursor: pointer; transition: width .3s ease, background .3s ease; }
 .cc-dots button.on { width: 22px; background: var(--mint); }
 .ringcount {
-  position: absolute; left: -18px; bottom: 34px; background: var(--paper); color: var(--ink); border-radius: 16px; padding: 10px 14px 9px;
-  box-shadow: 0 18px 40px -16px rgba(0,0,0,.55); font-size: 13px; line-height: 1.25; transform: rotate(-3deg);
+  position: absolute; right: -22px; top: -18px; background: var(--paper); color: var(--ink); border-radius: 16px; padding: 10px 14px 9px;
+  box-shadow: 0 18px 40px -16px rgba(0,0,0,.55); font-size: 13px; line-height: 1.25; transform: rotate(3deg);
 }
 .ringcount b { display: block; font-family: var(--display); font-size: 30px; font-weight: 760; font-stretch: 80%; line-height: 1; color: var(--petrol); }
 
@@ -306,7 +306,7 @@ footer a { color: rgba(255,255,255,.8); text-decoration-color: rgba(255,255,255,
 @media (max-width: 920px) {
   .hero-grid, .control, .guard-grid, .join-grid { grid-template-columns: 1fr; }
   .stage { margin-top: 8px; }
-  .ringcount { left: 0; bottom: -18px; }
+  .ringcount { right: 0; }
   .sc:nth-child(n) { grid-column: span 12; }
   .row { grid-template-columns: 1fr; gap: 10px; padding: 22px 0; }
   .row .route { display: none; }
