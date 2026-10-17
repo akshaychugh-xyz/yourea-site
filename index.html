@@ -111,7 +111,8 @@ h1 span:nth-child(2) { color: var(--mint); animation-delay: .12s; }
 /* Waitlist */
 form, .done-card { max-width: 540px; }
 .row { display: flex; gap: 8px; }
-input[type=text], input[type=tel] { flex: 1; min-width: 0; font-size: 17px; color: var(--ink); background: var(--paper); border: 2px solid transparent; border-radius: 14px; padding: 12px 14px 10px; -webkit-appearance: none; }
+.row + .row { margin-top: 8px; }
+input[type=text], input[type=tel], input[type=email] { flex: 1; min-width: 0; font-size: 17px; color: var(--ink); background: var(--paper); border: 2px solid transparent; border-radius: 14px; padding: 12px 14px 10px; -webkit-appearance: none; }
 input:focus { outline: none; border-color: var(--mint); }
 .tel { flex: 1.25; display: flex; min-width: 0; }
 .tel span { display: grid; place-items: center; padding: 0 9px 0 12px; border-radius: 14px 0 0 14px; background: #DCE7E1; color: var(--muted); font-weight: 600; }
@@ -318,6 +319,9 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
         <div class="row">
           <input name="name" type="text" autocomplete="given-name" required maxlength="80" placeholder="Your name" aria-label="Your name">
           <div class="tel"><span>+91</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required placeholder="WhatsApp number" aria-label="WhatsApp number"></div>
+        </div>
+        <div class="row">
+          <input name="email" type="email" inputmode="email" autocomplete="email" autocapitalize="off" spellcheck="false" required maxlength="120" placeholder="Gmail you’ll sign in with" aria-label="Email address">
         </div>
         <div class="under">
           <span>Your phone</span>
@@ -549,13 +553,15 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
     if (!name) { err.textContent = 'Add your name.'; form.name.focus(); return; }
     if (!/^[6-9]\d{9}$/.test(digits)) { err.textContent = 'Enter a 10-digit Indian mobile number.'; form.phone.focus(); return; }
+    const email = form.email.value.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Enter a valid email address.'; form.email.focus(); return; }
     if (!form.device.value) { err.textContent = 'Pick Android or iPhone.'; form.querySelector('input[name=device]').focus(); return; }
     go.disabled = true; go.textContent = 'Joining…';
     try {
       const r = await fetch(SUPABASE + '/rest/v1/rpc/join_waitlist_v2', {
         method: 'POST',
         headers: { apikey: ANON, Authorization: 'Bearer ' + ANON, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ p_name: name, p_phone: '+91' + digits, p_device: form.device.value, p_ref: ref || null, p_user_agent: navigator.userAgent.slice(0, 300) }),
+        body: JSON.stringify({ p_name: name, p_phone: '+91' + digits, p_device: form.device.value, p_email: email, p_ref: ref || null, p_user_agent: navigator.userAgent.slice(0, 300) }),
       });
       const out = await r.json().catch(() => null);
       if (!r.ok || !out) throw new Error((out && out.message) || 'HTTP ' + r.status);
