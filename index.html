@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>your·ea — Daily annoyances, handled</title>
-<meta name="description" content="your·ea is an AI on your own number. Scam calls, lost delivery riders, the gate, missed calls, a late maid: handled. Join the waitlist.">
-<meta property="og:title" content="your·ea — Daily annoyances, handled.">
-<meta property="og:description" content="An AI on your own number. Scam calls, delivery riders, the gate, missed calls, a late maid: handled.">
+<title>your·ea — A personal agent that lives on your calls</title>
+<meta name="description" content="India still runs on calls. your·ea is a personal agent on your own number: it stops spam, approves MyGate, checks the maid has come and calls back who you missed. Join the waitlist.">
+<meta property="og:title" content="your·ea — A personal agent that lives on your calls.">
+<meta property="og:description" content="India still runs on calls. It stops spam, approves MyGate, checks the maid has come and calls back who you missed.">
 <meta property="og:url" content="https://yourea.akshaychugh.xyz/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://yourea.akshaychugh.xyz/og.png">
@@ -71,35 +71,38 @@ header .mark { font-size: 26px; }
 main { flex: 1; display: flex; align-items: center; }
 .grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: clamp(36px, 6vw, 84px); align-items: center; padding-top: clamp(28px, 4vw, 44px); padding-bottom: clamp(36px, 5vw, 56px); }
 
-h1 { font-family: var(--display); font-weight: 780; font-stretch: 84%; letter-spacing: -.03em; line-height: .92; font-size: clamp(42px, 5.3vw, 74px); margin: 0; }
+h1 { font-family: var(--display); font-weight: 780; font-stretch: 84%; letter-spacing: -.03em; line-height: .94; font-size: clamp(38px, 4.6vw, 66px); margin: 0; }
 h1 span { white-space: nowrap; }
 h1 span { display: block; opacity: 0; transform: translateY(14px); animation: rise .8s cubic-bezier(.2,.8,.2,1) forwards; }
 h1 span:nth-child(2) { color: var(--mint); animation-delay: .12s; }
+.eyebrow { margin: 0 0 14px; font-family: var(--display); font-weight: 650; font-size: clamp(17px, 1.5vw, 20px); color: var(--soft-2); opacity: 0; animation: rise .8s cubic-bezier(.2,.8,.2,1) forwards; }
+.listhead { display: flex; align-items: baseline; justify-content: space-between; max-width: 540px; margin: 30px 0 8px; font-size: 12.5px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--mint); opacity: 0; animation: rise .6s ease .28s forwards; }
+.listhead small { font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--dim); }
 @keyframes rise { to { opacity: 1; transform: none; } }
-.lede { margin: 16px 0 0; max-width: 30em; color: var(--soft); font-size: clamp(17px, 1.4vw, 19px); opacity: 0; animation: rise .8s cubic-bezier(.2,.8,.2,1) .22s forwards; }
+.lede { margin: 18px 0 0; max-width: 30em; color: var(--soft); font-size: clamp(17px, 1.4vw, 19px); opacity: 0; animation: rise .8s cubic-bezier(.2,.8,.2,1) .22s forwards; }
 
 /* The ledger: each annoyance gets struck through as the phone handles it */
-.ledger { list-style: none; margin: 26px 0 30px; padding: 0; border-top: 1px solid rgba(255,255,255,.1); max-width: 540px; }
+.ledger { list-style: none; margin: 0 0 28px; padding: 0; border-top: 1px solid rgba(255,255,255,.1); max-width: 540px; }
 .ledger li { display: grid; grid-template-columns: 26px 1fr; gap: 0 12px; align-items: start; padding: 11px 0 10px; border-bottom: 1px solid rgba(255,255,255,.1); opacity: 0; animation: rise .6s cubic-bezier(.2,.8,.2,1) forwards; }
 .ledger li:nth-child(1) { animation-delay: .3s; } .ledger li:nth-child(2) { animation-delay: .36s; } .ledger li:nth-child(3) { animation-delay: .42s; }
 .ledger li:nth-child(4) { animation-delay: .48s; } .ledger li:nth-child(5) { animation-delay: .54s; } .ledger li:nth-child(6) { animation-delay: .6s; }
-.box { width: 22px; height: 22px; margin-top: 2px; border-radius: 7px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.22); display: grid; place-items: center; color: var(--neem); transition: background .3s ease, box-shadow .3s ease; }
+.box { position: relative; width: 22px; height: 22px; margin-top: 2px; border-radius: 7px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.22); display: grid; place-items: center; color: var(--neem); transition: background .3s ease, box-shadow .3s ease; }
 .box .ms { font-size: 16px; transform: scale(0); transition: transform .35s cubic-bezier(.3,1.8,.5,1); }
 .what { font-family: var(--display); font-weight: 650; font-size: clamp(18px, 1.55vw, 21px); line-height: 1.25; color: #fff; transition: color .4s ease; }
-.what s { text-decoration: none; background: linear-gradient(var(--mint), var(--mint)) no-repeat 0 58% / 0% 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size .55s cubic-bezier(.6,0,.3,1); }
+.what s { text-decoration: line-through 2px transparent; text-decoration-skip-ink: none; transition: text-decoration-color .4s ease; }
 .how { grid-column: 2; font-size: 14.5px; line-height: 1.35; color: var(--soft-2); max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s ease, opacity .4s ease, margin .4s ease; }
 .ledger li { cursor: pointer; border-radius: 10px; transition: background .2s ease; }
 .ledger li:hover { background: rgba(255,255,255,.04); }
 .ledger li:hover .what { color: #fff; }
 .ledger li:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
 .ledger li.now .box { box-shadow: inset 0 0 0 1.5px var(--mint); }
-.ledger li.now .box::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 1s ease-in-out infinite alternate; }
+.ledger li.now .box::after { content: ""; position: absolute; left: 50%; top: 50%; margin: -4px 0 0 -4px; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 1s ease-in-out infinite alternate; }
 @keyframes pulse { from { transform: scale(.6); opacity: .6; } to { transform: scale(1); opacity: 1; } }
 .ledger li.now .how { max-height: 40px; opacity: 1; margin-top: 2px; color: var(--mint-ink); }
 .ledger li.done .box { background: var(--mint); box-shadow: none; }
 .ledger li.done .box .ms { transform: scale(1); }
 .ledger li.done .what { color: var(--dim); }
-.ledger li.done .what s { background-size: 100% 2px; }
+.ledger li.done .what s { text-decoration-color: var(--mint); }
 
 /* Waitlist */
 form, .done-card { max-width: 540px; }
@@ -208,7 +211,9 @@ form.ok + .done-card { display: block; animation: rise .5s ease; }
 .clock { font-family: var(--display); font-weight: 700; font-size: 40px; letter-spacing: -.02em; line-height: 1; text-align: center; margin: 8px 0 2px; font-variant-numeric: tabular-nums; }
 .clock + small { display: block; text-align: center; font-size: 12px; color: var(--a-muted); }
 
-footer.wrap { padding-bottom: 24px; font-size: 14.5px; color: var(--soft-2); }
+footer.wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 20px; padding-bottom: 24px; font-size: 14.5px; color: var(--soft-2); }
+.soon { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px 5px; border-radius: 999px; background: rgba(37,211,102,.1); color: #9FE8BC; font-weight: 600; font-size: 13.5px; }
+.soon .wa { width: 8px; height: 8px; border-radius: 50%; background: #25D366; }
 footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.35); }
 
 @media (max-width: 900px) {
@@ -237,8 +242,11 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
 <main>
   <div class="wrap grid">
     <div>
-      <h1><span>Daily annoyances,</span><span>handled.</span></h1>
-      <p class="lede">An AI on your own number. It deals with these so you don’t have to, and tells you only what matters.</p>
+      <p class="eyebrow">India still runs on calls.</p>
+      <h1><span>A personal agent</span><span>that lives on your calls.</span></h1>
+      <p class="lede">It stops spam, approves MyGate, checks the maid has come, calls back who you missed and puts family through. On your own number.</p>
+
+      <p class="listhead">Daily annoyances, handled <small>Tap one to see it</small></p>
 
       <ol class="ledger" id="ledger">
         <li><span class="box"><span class="ms">check</span></span><span class="what"><s>“Your KYC expires today” scam calls</s></span><span class="how">Ended, and the number blocked.</span></li>
@@ -255,8 +263,9 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
           <div class="tel"><span>+91</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required placeholder="WhatsApp number" aria-label="WhatsApp number"></div>
         </div>
         <div class="under">
+          <span>Your phone</span>
           <div class="seg" role="radiogroup" aria-label="Your phone">
-            <label><input type="radio" name="device" value="android" checked><span>Android</span></label>
+            <label><input type="radio" name="device" value="android"><span>Android</span></label>
             <label><input type="radio" name="device" value="iphone"><span>iPhone</span></label>
           </div>
           <span style="flex:1"></span>
@@ -288,7 +297,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   </div>
 </main>
 
-<footer class="wrap">Made with ❤️ by <a href="https://akshaychugh.xyz">Akshay Chugh</a></footer>
+<footer class="wrap"><span class="soon"><span class="wa"></span>WhatsApp calls and messages: coming soon</span><span>Made with ❤️ by <a href="https://akshaychugh.xyz">Akshay Chugh</a></span></footer>
 
 <script>
 (() => {
@@ -420,7 +429,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   const ref = (new URLSearchParams(location.search).get('ref') || '').slice(0, 60);
   const form = $('wl'), err = $('err'), go = $('go');
   const shareUrl = 'https://yourea.akshaychugh.xyz/?ref=friend';
-  $('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent('Daily annoyances, handled. your·ea is an AI on your own number. Join the waitlist: ' + shareUrl);
+  $('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent('India still runs on calls. your·ea is a personal agent that lives on your calls: it stops spam, approves MyGate and checks the maid has come. Join the waitlist: ' + shareUrl);
   $('copyLink').onclick = async e => {
     const b = e.currentTarget;
     try { await navigator.clipboard.writeText(shareUrl); b.textContent = 'Copied ✓'; } catch { b.textContent = shareUrl; }
@@ -435,6 +444,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
     if (!name) { err.textContent = 'Add your name.'; form.name.focus(); return; }
     if (!/^[6-9]\d{9}$/.test(digits)) { err.textContent = 'Enter a 10-digit Indian mobile number.'; form.phone.focus(); return; }
+    if (!form.device.value) { err.textContent = 'Pick Android or iPhone.'; form.querySelector('input[name=device]').focus(); return; }
     go.disabled = true; go.textContent = 'Joining…';
     try {
       const r = await fetch(SUPABASE + '/rest/v1/rpc/join_waitlist_v2', {
