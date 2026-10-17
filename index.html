@@ -69,7 +69,7 @@ header .mark { font-size: 26px; }
 @keyframes ping { from { transform: scale(1); opacity: .7; } to { transform: scale(2.8); opacity: 0; } }
 
 main { flex: 1; display: flex; align-items: center; }
-.grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: clamp(36px, 6vw, 84px); align-items: center; padding-top: clamp(28px, 4vw, 44px); padding-bottom: clamp(36px, 5vw, 56px); }
+.grid { display: grid; grid-template-columns: 1.12fr .88fr; grid-template-areas: "intro spot" "list spot" "join spot"; column-gap: clamp(36px, 6vw, 84px); align-items: center; align-content: center; padding-top: clamp(28px, 4vw, 44px); padding-bottom: clamp(36px, 5vw, 56px); }
 
 h1 { font-family: var(--display); font-weight: 780; font-stretch: 84%; letter-spacing: -.03em; line-height: .94; font-size: clamp(38px, 4.6vw, 66px); margin: 0; }
 h1 span { white-space: nowrap; }
@@ -80,6 +80,10 @@ h1 span:nth-child(2) { color: var(--mint); animation-delay: .12s; }
 .listhead small { font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--dim); }
 @keyframes rise { to { opacity: 1; transform: none; } }
 .lede { margin: 18px 0 0; max-width: 30em; color: var(--soft); font-size: clamp(17px, 1.4vw, 19px); opacity: 0; animation: rise .8s cubic-bezier(.2,.8,.2,1) .22s forwards; }
+
+.intro { grid-area: intro; } .list { grid-area: list; } .join { grid-area: join; } .spot { grid-area: spot; }
+.grid > * { min-width: 0; }
+.chipbar, .mcta { display: none; }
 
 /* The ledger: each annoyance gets struck through as the phone handles it */
 .ledger { list-style: none; margin: 0 0 28px; padding: 0; border-top: 1px solid rgba(255,255,255,.1); max-width: 540px; }
@@ -216,9 +220,30 @@ footer.wrap { display: flex; flex-wrap: wrap; align-items: center; justify-conte
 .soon .wa { width: 8px; height: 8px; border-radius: 50%; background: #25D366; }
 footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.35); }
 
+/* Phones: the list becomes a chip row sitting on the phone, so the two stay in view together */
 @media (max-width: 900px) {
-  .grid { grid-template-columns: 1fr; }
-  .spot { order: 3; }
+  .grid { grid-template-columns: minmax(0, 1fr); grid-template-areas: "intro" "spot" "join"; padding-top: 8px; padding-bottom: 40px; }
+  .list { display: none; }
+  .spot { flex-direction: column; align-items: stretch; margin: 26px 0 30px; }
+  .chipbar { display: block; }
+  .chipbar .listhead { margin: 0 0 10px; }
+  .chips { display: flex; gap: 8px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; margin: 0 calc(-1 * var(--gutter)); padding: 2px var(--gutter) 4px; }
+  .chips::-webkit-scrollbar { display: none; }
+  .chip { flex: none; scroll-snap-align: center; display: inline-flex; align-items: center; gap: 7px; min-height: 42px; padding: 0 14px 0 9px; border: 0; border-radius: 999px; background: rgba(255,255,255,.07); color: var(--soft); font-family: var(--display); font-weight: 650; font-size: 15.5px; cursor: pointer; position: relative; overflow: hidden; transition: background .25s ease, color .25s ease; }
+  .chip .ic { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,.08); }
+  .chip .ic .ms { font-size: 15px; }
+  .chip.now { background: var(--mint-ink); color: var(--neem); }
+  .chip.now .ic { background: var(--neem); color: var(--mint); }
+  .chip.now::after { content: ""; position: absolute; left: 0; bottom: 0; height: 3px; width: 100%; background: #3FAE76; transform-origin: left; animation: fill var(--dur, 7s) linear forwards; }
+  @keyframes fill { from { transform: scaleX(0); } }
+  .chip.done { color: var(--dim); }
+  .chip.done .ic { background: var(--mint); color: var(--neem); }
+  .chip:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
+  .cap { min-height: 1.4em; margin: 10px 0 18px; font-size: 15px; color: var(--mint-ink); }
+  .phone { align-self: center; }
+  .mcta { display: flex; position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom)); z-index: 20; align-items: center; justify-content: center; height: 54px; border-radius: 16px; background: var(--mint); color: var(--neem); font-family: var(--display); font-weight: 700; font-size: 17px; text-decoration: none; box-shadow: 0 4px 0 #3FAE76, 0 16px 34px -10px rgba(0,0,0,.6); transition: transform .35s cubic-bezier(.3,1.3,.5,1), opacity .25s ease; }
+  .mcta.hide { transform: translateY(140%); opacity: 0; pointer-events: none; }
+  footer.wrap { padding-bottom: 90px; }
 }
 @media (max-width: 520px) {
   body { font-size: 17px; }
@@ -226,7 +251,10 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   .row { flex-direction: column; }
   .under { flex-wrap: wrap; }
   .under .btn { width: 100%; order: 3; }
-  .phone { width: 284px; height: 590px; }
+  .phone { width: 272px; height: 520px; }
+  .who b { font-size: 18px; } .lead { width: 44px; height: 44px; margin: 2px 0; }
+  .who small, .status small { display: none; }
+  .scene { gap: 8px; } .bub { font-size: 12.5px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; }
@@ -241,11 +269,13 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
 
 <main>
   <div class="wrap grid">
-    <div>
+    <div class="intro">
       <p class="eyebrow">India still runs on calls.</p>
       <h1><span>A personal agent</span><span>that lives on your calls.</span></h1>
       <p class="lede">It stops spam, approves MyGate, checks the maid has come, calls back who you missed and puts family through. On your own number.</p>
+    </div>
 
+    <div class="list">
       <p class="listhead">Daily annoyances, handled <small>Tap one to see it</small></p>
 
       <ol class="ledger" id="ledger">
@@ -256,7 +286,9 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
         <li><span class="box"><span class="ms">check</span></span><span class="what"><s>The maid running late</s></span><span class="how">A heads-up, with backup options ready.</span></li>
         <li><span class="box"><span class="ms">check</span></span><span class="what"><s>Family calling when it’s urgent</s></span><span class="how">Put straight through to you.</span></li>
       </ol>
+    </div>
 
+    <div class="join" id="join">
       <form id="wl" novalidate>
         <div class="row">
           <input name="name" type="text" autocomplete="given-name" required maxlength="80" placeholder="Your name" aria-label="Your name">
@@ -286,6 +318,11 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
 
     <div class="spot">
       <p class="sr">The phone shows your·ea handling each annoyance in the list, one after another.</p>
+      <div class="chipbar">
+        <p class="listhead">Daily annoyances, handled</p>
+        <div class="chips" id="chips" role="tablist" aria-label="Annoyances"></div>
+        <p class="cap" id="cap"></p>
+      </div>
       <div class="phone" aria-hidden="true">
         <div class="screen" id="screen">
           <div class="sbar"><span>9:41</span><i></i></div>
@@ -296,6 +333,8 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     </div>
   </div>
 </main>
+
+<a class="mcta" id="mcta" href="#join">Join the waitlist</a>
 
 <footer class="wrap"><span class="soon"><span class="wa"></span>WhatsApp calls and messages: coming soon</span><span>Made with ❤️ by <a href="https://akshaychugh.xyz">Akshay Chugh</a></span></footer>
 
@@ -329,6 +368,23 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   ];
 
   const scene = $('scene'), screen = $('screen'), result = $('result'), rows = [...$('ledger').children];
+  // Phones show the rows as chips on top of the phone.
+  const SHORT = [['block', 'Scam calls'], ['shopping_bag', 'Lost riders'], ['door_front', 'MyGate'], ['alarm', 'Missed calls'], ['cleaning_services', 'Late maid'], ['star', 'Urgent family']];
+  const DUR = { call: 7.4, gate: 6.4, help: 5.9 };
+  const chipsEl = $('chips');
+  chipsEl.innerHTML = SHORT.map(([ic, t], i) => `<button class="chip" type="button" role="tab" aria-selected="false"><span class="ic"><span class="ms">${ic}</span></span>${t}</button>`).join('');
+  const chips = [...chipsEl.children];
+  // One place sets a row's state, on both the list and its chip.
+  function mark(i, now, done) {
+    for (const el of [rows[i], chips[i]]) { el.classList.toggle('now', now); el.classList.toggle('done', done); }
+    chips[i].setAttribute('aria-selected', String(now));
+    chips[i].querySelector('.ms').textContent = done ? 'check' : SHORT[i][0];
+    if (now) {
+      chips[i].style.setProperty('--dur', DUR[SCENES[i].kind] + 's');
+      $('cap').textContent = rows[i].querySelector('.how').textContent;
+      chipsEl.scrollTo({ left: chips[i].offsetLeft - (chipsEl.clientWidth - chips[i].offsetWidth) / 2, behavior: reduce ? 'auto' : 'smooth' });
+    }
+  }
   let tick = null, run = 0;
   const STOP = Symbol('stop');
   const wait = ms => { const mine = run; return new Promise((res, rej) => setTimeout(() => (mine === run ? res() : rej(STOP)), reduce ? 0 : ms)); };
@@ -391,8 +447,8 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     clearInterval(tick); screen.classList.remove('glow');
     try {
       for (let i = start, first = true; ; i = (i + 1) % SCENES.length, first = false) {
-        if (i === 0 && !first) { rows.forEach(r => r.classList.remove('done', 'now')); await wait(300); }
-        rows.forEach((r, j) => { r.classList.toggle('now', j === i); r.classList.toggle('done', j < i); });
+        if (i === 0 && !first) { rows.forEach((_, j) => mark(j, false, false)); await wait(300); }
+        rows.forEach((_, j) => mark(j, j === i, j < i));
         await playScene(i);
         if (reduce) return;
       }
@@ -407,7 +463,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     const s = SCENES[i];
     await (s.kind === 'call' ? playCall(s) : s.kind === 'gate' ? playGate() : playHelp());
     clearInterval(tick);
-    rows[i].classList.remove('now'); rows[i].classList.add('done');
+    mark(i, false, true);
     if (reduce) return;
     scene.classList.add('out'); result.classList.remove('show');
     await wait(450);
@@ -421,6 +477,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     r.addEventListener('click', () => loop(i));
     r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loop(i); } });
   });
+  chips.forEach((c, i) => c.addEventListener('click', () => loop(i)));
   setTimeout(() => { if (!run) loop(0); }, reduce ? 0 : 900);
 
   // Waitlist
@@ -434,6 +491,15 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     const b = e.currentTarget;
     try { await navigator.clipboard.writeText(shareUrl); b.textContent = 'Copied ✓'; } catch { b.textContent = shareUrl; }
   };
+  // Phones: a sticky Join button, hidden while the form is on screen or after joining.
+  const mcta = $('mcta');
+  new IntersectionObserver(([e]) => mcta.classList.toggle('hide', e.isIntersecting)).observe($('join'));
+  mcta.addEventListener('click', e => {
+    e.preventDefault();
+    $('join').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
+    setTimeout(() => form.name.focus({ preventScroll: true }), reduce ? 0 : 600);
+  });
+
   form.addEventListener('submit', async e => {
     e.preventDefault();
     err.textContent = '';
@@ -457,6 +523,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
       const first = name.split(/\s+/)[0];
       $('doneT').textContent = out.status === 'already' ? `${first}, you’re already in line (#${out.position}).` : `You’re #${out.position} in line, ${first}.`;
       form.classList.add('ok');
+      mcta.remove();
     } catch (x) {
       err.textContent = 'That didn’t go through. Try again in a minute.';
       console.error('[your-ea waitlist]', x);
