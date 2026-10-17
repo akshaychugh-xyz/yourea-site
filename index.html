@@ -251,10 +251,31 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   .row { flex-direction: column; }
   .under { flex-wrap: wrap; }
   .under .btn { width: 100%; order: 3; }
-  .phone { width: 272px; height: 520px; }
-  .who b { font-size: 18px; } .lead { width: 44px; height: 44px; margin: 2px 0; }
+  header.wrap { padding-top: 18px; }
+  header .mark { font-size: 23px; }
+  .eyebrow { font-size: 15px; margin-bottom: 8px; }
+  h1 { font-size: clamp(31px, 9vw, 38px); }
+  /* The chips say what the lede says, so phones skip the lede and give the room to the phone. */
+  .lede { display: none; }
+  .spot { margin: 18px 0 28px; }
+  .cap { display: none; }
+  .chips { margin-bottom: 14px; }
+  /* Full-width screen, as tall as the space left above the Join button (set in JS as --ph). */
+  .phone { width: 100%; height: var(--ph, 520px); padding: 7px; border-radius: 34px; }
+  .phone::before { top: 15px; width: 14px; height: 14px; margin-left: -7px; }
+  .screen, .screen::after { border-radius: 28px; }
+  .sbar { height: 32px; padding-top: 8px; font-size: 12px; }
+  .scene { top: 32px; gap: 8px; padding: 4px 14px 12px; }
+  .lead { display: none; }
+  .who b { font-size: 19px; }
   .who small, .status small { display: none; }
-  .scene { gap: 8px; } .bub { font-size: 12.5px; }
+  .bub { font-size: 13.5px; max-width: 82%; }
+  .clock { font-size: 34px; margin-top: 2px; }
+  .result { bottom: 10px; }
+  /* When the result lands, the caller details fold away so the last reply stays visible above it. */
+  .who, .status { max-height: 140px; transition: max-height .4s ease, opacity .3s ease, margin .4s ease, padding .4s ease; }
+  .scene.res .feed > :first-child { display: none; }
+  .scene.res .who, .scene.res .status { max-height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; margin: -4px 0; overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; }
@@ -389,7 +410,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   const STOP = Symbol('stop');
   const wait = ms => { const mine = run; return new Promise((res, rej) => setTimeout(() => (mine === run ? res() : rej(STOP)), reduce ? 0 : ms)); };
 
-  function showResult([icon, text]) { $('rIc').textContent = icon; $('rText').textContent = text; result.classList.add('show'); }
+  function showResult([icon, text]) { $('rIc').textContent = icon; $('rText').textContent = text; result.classList.add('show'); scene.classList.add('res'); }
 
   async function playCall(s) {
     const strip = ['Greeting', 'Asking who', s.transfer ? 'Connecting' : 'Handling', 'Message'];
@@ -459,7 +480,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
 
   async function playScene(i) {
     result.classList.remove('show');
-    scene.classList.remove('out'); scene.classList.remove('in'); void scene.offsetWidth; scene.classList.add('in');
+    scene.classList.remove('out', 'res'); scene.classList.remove('in'); void scene.offsetWidth; scene.classList.add('in');
     const s = SCENES[i];
     await (s.kind === 'call' ? playCall(s) : s.kind === 'gate' ? playGate() : playHelp());
     clearInterval(tick);
@@ -491,9 +512,21 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     const b = e.currentTarget;
     try { await navigator.clipboard.writeText(shareUrl); b.textContent = 'Copied ✓'; } catch { b.textContent = shareUrl; }
   };
+  // Phones: the phone takes the height left between the chips and the sticky Join button, so it all fits one screen.
+  const phoneEl = document.querySelector('.phone');
+  function fit() {
+    if (innerWidth > 900) { phoneEl.style.removeProperty('--ph'); return; }
+    const top = phoneEl.getBoundingClientRect().top + scrollY;
+    phoneEl.style.setProperty('--ph', Math.round(Math.max(300, Math.min(620, innerHeight - top - 88))) + 'px');
+  }
+  fit();
+  document.fonts?.ready.then(fit);
+  let lastW = innerWidth; // mobile browsers fire resize as the URL bar slides; only refit on a width change
+  addEventListener('resize', () => { if (innerWidth !== lastW) { lastW = innerWidth; fit(); } });
+
   // Phones: a sticky Join button, hidden while the form is on screen or after joining.
   const mcta = $('mcta');
-  new IntersectionObserver(([e]) => mcta.classList.toggle('hide', e.isIntersecting)).observe($('join'));
+  new IntersectionObserver(([e]) => mcta.classList.toggle('hide', e.intersectionRatio >= 0.5), { threshold: [0, 0.5, 1] }).observe($('join'));
   mcta.addEventListener('click', e => {
     e.preventDefault();
     $('join').scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'center' });
