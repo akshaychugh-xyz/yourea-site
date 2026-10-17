@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>your·ea — If I don’t pick up, my AI will</title>
-<meta name="description" content="your·ea is an AI that picks up calls on your own number when you can't. Join the waitlist.">
-<meta property="og:title" content="your·ea — If I don’t pick up, my AI will.">
-<meta property="og:description" content="An AI that picks up calls on your own number when you can't. Join the waitlist.">
+<title>your·ea — Daily annoyances, handled</title>
+<meta name="description" content="your·ea is an AI on your own number. Scam calls, lost delivery riders, the gate, missed calls, a late maid: handled. Join the waitlist.">
+<meta property="og:title" content="your·ea — Daily annoyances, handled.">
+<meta property="og:description" content="An AI on your own number. Scam calls, delivery riders, the gate, missed calls, a late maid: handled.">
 <meta property="og:url" content="https://yourea.akshaychugh.xyz/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://yourea.akshaychugh.xyz/og.png">
@@ -15,20 +15,31 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wdth,wght@75..125,600..800&family=Mukta:wght@400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wdth,wght@75..125,500..800&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..24,500,1,0&icon_names=alarm,block,call,check,check_circle,cleaning_services,door_front,shield,shopping_bag,star&display=block" rel="stylesheet">
 <style>
 :root {
   --neem: #0F2E2A;
   --neem-2: #16403A;
-  --neem-3: #0B2421;
-  --night: #0D1513;
+  --neem-3: #0A201D;
   --mint: #6FE0A5;
   --mint-ink: #BFEFD6;
+  --lagoon: #5CC6D3;
   --soft: #BFD9CF;
   --soft-2: #93C2B5;
+  --dim: #5E7D73;
   --paper: #EEF4F0;
   --ink: #13221C;
   --muted: #56675F;
+  /* the app's dark palette (ui/theme.ts) */
+  --a-bg: #0D1513;
+  --a-surface: #15201D;
+  --a-surface-2: #1E2B27;
+  --a-text: #E9F2EE;
+  --a-muted: #93A69E;
+  --a-faint: #4F615A;
+  --a-line: #23312D;
+  --a-ok: #56D08C;
   --display: "Anek Devanagari", "Mukta", sans-serif;
   --body: "Mukta", sans-serif;
   --gutter: clamp(16px, 4vw, 40px);
@@ -38,92 +49,175 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0; min-height: 100vh; min-height: 100svh; display: flex; flex-direction: column; overflow-x: hidden;
   font-family: var(--body); font-size: 18px; line-height: 1.5; color: #fff;
-  background: radial-gradient(48% 55% at 74% 46%, rgba(111,224,165,.16), transparent 70%), linear-gradient(180deg, var(--neem-2) 0%, var(--neem) 62%, var(--neem-3) 100%);
+  background:
+    radial-gradient(42% 60% at 76% 50%, rgba(111,224,165,.13), transparent 70%),
+    linear-gradient(170deg, var(--neem-2) 0%, var(--neem) 55%, var(--neem-3) 100%);
 }
 button, input { font: inherit; }
 a { color: inherit; }
-.wrap { width: 100%; max-width: 1080px; margin: 0 auto; padding: 0 var(--gutter); }
+.wrap { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 var(--gutter); }
+.ms { font-family: "Material Symbols Rounded"; font-weight: 500; font-style: normal; line-height: 1; display: inline-block; white-space: nowrap; -webkit-font-smoothing: antialiased; font-variation-settings: "FILL" 1, "opsz" 20; font-size: 18px; }
 .mark { font-family: var(--display); font-weight: 700; letter-spacing: -.02em; white-space: nowrap; }
 .mark b { display: inline-block; width: .2em; height: .2em; border-radius: 50%; background: var(--mint); margin: 0 .07em; vertical-align: .2em; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
-/* Toran: marigolds and mango leaves on a sagging string, as in the app's unlock screen */
-.toran { position: absolute; left: 0; right: 0; top: 0; height: 110px; pointer-events: none; z-index: 4; }
-.toran svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.toran path { fill: none; stroke: rgba(201,216,207,.55); stroke-width: 1.5; opacity: 0; animation: fadein .4s ease .2s forwards; }
-.bead { position: absolute; width: 0; height: 0; opacity: 0; animation: drop .9s cubic-bezier(.3,1.55,.5,1) forwards; }
-.bead > i { position: absolute; left: -9px; top: 0; width: 18px; display: flex; flex-direction: column; align-items: center; transform-origin: top center; animation: sway 2.6s ease-in-out infinite alternate; }
-.bead > i::before { content: ""; width: 1.5px; height: 5px; background: rgba(201,216,207,.55); }
-.bead.leaf > i::before { height: 3px; }
-.bead .flower { width: 18px; height: 18px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #FFD98A 0%, #FFD98A 18%, #F5A623 46%, #D9741A 100%); box-shadow: 0 2px 4px rgba(0,0,0,.35); }
-.bead .leafy { width: 11px; height: 24px; border-radius: 1px 11px 1px 11px; background: linear-gradient(90deg, #2E8F5A 47%, #4DB87B 53%); }
-@keyframes drop { from { opacity: 0; transform: translateY(-80px); } 30% { opacity: 1; } to { opacity: 1; transform: none; } }
-@keyframes sway { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
-@keyframes fadein { to { opacity: 1; } }
-
-header.wrap { position: relative; z-index: 5; padding-top: clamp(64px, 8vw, 80px); }
-header .mark { font-size: 28px; }
+header.wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 28px; }
+header .mark { font-size: 26px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; font-size: 13.5px; font-weight: 600; padding: 6px 12px 5px; border-radius: 999px; background: rgba(111,224,165,.12); color: var(--mint-ink); }
+.dot { position: relative; width: 7px; height: 7px; border-radius: 50%; background: var(--mint); flex: none; }
+.dot::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: inherit; animation: ping 1.6s ease-out infinite; }
+@keyframes ping { from { transform: scale(1); opacity: .7; } to { transform: scale(2.8); opacity: 0; } }
 
 main { flex: 1; display: flex; align-items: center; }
-.grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(36px, 6vw, 72px); align-items: center; padding-top: clamp(24px, 4vw, 40px); padding-bottom: clamp(48px, 6vw, 64px); }
-.pill { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; padding: 6px 12px 5px; border-radius: 999px; background: rgba(111,224,165,.14); color: var(--mint-ink); margin-bottom: 20px; }
-.live { position: relative; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); flex: none; }
-.live::after { content: ""; position: absolute; inset: 0; border-radius: 50%; background: var(--mint); animation: ping 1.6s ease-out infinite; }
-@keyframes ping { from { transform: scale(1); opacity: .7; } to { transform: scale(2.8); opacity: 0; } }
-h1 { font-family: var(--display); font-weight: 780; font-stretch: 86%; letter-spacing: -.03em; line-height: .95; font-size: clamp(44px, 6vw, 80px); margin: 0; }
-h1 .l2 { display: block; color: var(--mint); }
-h1 .word { display: inline-block; opacity: 0; transform: translateY(.4em) rotate(4deg); animation: pop .7s cubic-bezier(.3,1.5,.5,1) forwards; }
-@keyframes pop { to { opacity: 1; transform: none; } }
-.lede { margin: 18px 0 28px; max-width: 28em; font-size: clamp(18px, 1.5vw, 20px); color: var(--soft); }
+.grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: clamp(36px, 6vw, 84px); align-items: center; padding-top: clamp(28px, 4vw, 44px); padding-bottom: clamp(36px, 5vw, 56px); }
+
+h1 { font-family: var(--display); font-weight: 780; font-stretch: 84%; letter-spacing: -.03em; line-height: .92; font-size: clamp(42px, 5.3vw, 74px); margin: 0; }
+h1 span { white-space: nowrap; }
+h1 span { display: block; opacity: 0; transform: translateY(14px); animation: rise .8s cubic-bezier(.2,.8,.2,1) forwards; }
+h1 span:nth-child(2) { color: var(--mint); animation-delay: .12s; }
+@keyframes rise { to { opacity: 1; transform: none; } }
+.lede { margin: 16px 0 0; max-width: 30em; color: var(--soft); font-size: clamp(17px, 1.4vw, 19px); opacity: 0; animation: rise .8s cubic-bezier(.2,.8,.2,1) .22s forwards; }
+
+/* The ledger: each annoyance gets struck through as the phone handles it */
+.ledger { list-style: none; margin: 26px 0 30px; padding: 0; border-top: 1px solid rgba(255,255,255,.1); max-width: 540px; }
+.ledger li { display: grid; grid-template-columns: 26px 1fr; gap: 0 12px; align-items: start; padding: 11px 0 10px; border-bottom: 1px solid rgba(255,255,255,.1); opacity: 0; animation: rise .6s cubic-bezier(.2,.8,.2,1) forwards; }
+.ledger li:nth-child(1) { animation-delay: .3s; } .ledger li:nth-child(2) { animation-delay: .36s; } .ledger li:nth-child(3) { animation-delay: .42s; }
+.ledger li:nth-child(4) { animation-delay: .48s; } .ledger li:nth-child(5) { animation-delay: .54s; } .ledger li:nth-child(6) { animation-delay: .6s; }
+.box { width: 22px; height: 22px; margin-top: 2px; border-radius: 7px; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.22); display: grid; place-items: center; color: var(--neem); transition: background .3s ease, box-shadow .3s ease; }
+.box .ms { font-size: 16px; transform: scale(0); transition: transform .35s cubic-bezier(.3,1.8,.5,1); }
+.what { font-family: var(--display); font-weight: 650; font-size: clamp(18px, 1.55vw, 21px); line-height: 1.25; color: #fff; transition: color .4s ease; }
+.what s { text-decoration: none; background: linear-gradient(var(--mint), var(--mint)) no-repeat 0 58% / 0% 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size .55s cubic-bezier(.6,0,.3,1); }
+.how { grid-column: 2; font-size: 14.5px; line-height: 1.35; color: var(--soft-2); max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s ease, opacity .4s ease, margin .4s ease; }
+.ledger li.now .box { box-shadow: inset 0 0 0 1.5px var(--mint); }
+.ledger li.now .box::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 1s ease-in-out infinite alternate; }
+@keyframes pulse { from { transform: scale(.6); opacity: .6; } to { transform: scale(1); opacity: 1; } }
+.ledger li.now .how { max-height: 40px; opacity: 1; margin-top: 2px; color: var(--mint-ink); }
+.ledger li.done .box { background: var(--mint); box-shadow: none; }
+.ledger li.done .box .ms { transform: scale(1); }
+.ledger li.done .what { color: var(--dim); }
+.ledger li.done .what s { background-size: 100% 2px; }
 
 /* Waitlist */
-form, .done { max-width: 460px; }
+form, .done-card { max-width: 540px; }
 .row { display: flex; gap: 8px; }
-input[type=text], input[type=tel] { flex: 1; min-width: 0; font-size: 17px; color: var(--ink); background: var(--paper); border: 2px solid transparent; border-radius: 16px; padding: 13px 14px 11px; -webkit-appearance: none; }
+input[type=text], input[type=tel] { flex: 1; min-width: 0; font-size: 17px; color: var(--ink); background: var(--paper); border: 2px solid transparent; border-radius: 14px; padding: 12px 14px 10px; -webkit-appearance: none; }
 input:focus { outline: none; border-color: var(--mint); }
-.tel { flex: 1.3; display: flex; min-width: 0; }
-.tel span { display: grid; place-items: center; padding: 0 10px 0 13px; border-radius: 16px 0 0 16px; background: #DCE7E1; color: var(--muted); font-weight: 600; }
-.tel input { border-radius: 0 16px 16px 0; }
-.foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.tel { flex: 1.25; display: flex; min-width: 0; }
+.tel span { display: grid; place-items: center; padding: 0 9px 0 12px; border-radius: 14px 0 0 14px; background: #DCE7E1; color: var(--muted); font-weight: 600; }
+.tel input { border-radius: 0 14px 14px 0; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1; padding: 14px 20px 12px; border-radius: 14px; background: var(--mint); color: var(--neem); box-shadow: 0 4px 0 #3FAE76; transition: transform .18s cubic-bezier(.3,1.6,.5,1); white-space: nowrap; }
+.btn:hover { transform: translateY(-2px); }
+.btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #3FAE76; }
+.btn:focus-visible, .seg input:focus-visible + span { outline: 3px solid #F5A623; outline-offset: 2px; }
+.btn[disabled] { opacity: .7; cursor: progress; }
+.under { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; color: var(--soft-2); }
 .seg { display: flex; gap: 6px; }
 .seg label { position: relative; cursor: pointer; }
 .seg input { position: absolute; opacity: 0; pointer-events: none; }
-.seg span { display: block; padding: 6px 12px 5px; border-radius: 999px; background: rgba(255,255,255,.08); color: var(--soft); font-size: 14.5px; font-weight: 600; transition: background .15s ease, color .15s ease; }
-.seg input:checked + span { background: var(--mint-ink); color: var(--night); }
-.seg input:focus-visible + span { outline: 2px solid var(--mint); outline-offset: 2px; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer; text-decoration: none; font-family: var(--display); font-weight: 700; font-size: 17px; line-height: 1; padding: 15px 22px 13px; border-radius: 16px; background: var(--mint); color: var(--night); box-shadow: 0 5px 0 #3FAE76; transition: transform .2s cubic-bezier(.3,1.6,.5,1); white-space: nowrap; }
-.btn:hover { transform: translateY(-2px); }
-.btn:active { transform: translateY(2px); box-shadow: 0 3px 0 #3FAE76; }
-.btn:focus-visible { outline: 3px solid #F5A623; outline-offset: 3px; }
-.btn[disabled] { opacity: .7; cursor: progress; }
+.seg span { display: block; padding: 5px 11px 4px; border-radius: 999px; background: rgba(255,255,255,.08); color: var(--soft); font-size: 14px; font-weight: 600; transition: background .15s ease, color .15s ease; }
+.seg input:checked + span { background: var(--mint-ink); color: var(--neem); }
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
-.err { min-height: 1.2em; margin: 10px 0 0; font-size: 14.5px; color: #FFB3A7; }
-.done { display: none; padding: 18px 20px; border-radius: 20px; background: rgba(111,224,165,.12); box-shadow: inset 0 0 0 1.5px rgba(111,224,165,.35); }
-.done strong { display: block; font-family: var(--display); font-weight: 700; font-size: 22px; }
-.done p { margin: 2px 0 14px; color: var(--soft); font-size: 16px; }
-.done .acts { display: flex; flex-wrap: wrap; gap: 8px; }
-.done .btn { font-size: 15px; padding: 11px 16px 9px; box-shadow: none; }
-.done .ghost { background: rgba(255,255,255,.1); color: #fff; }
+.err { min-height: 1.2em; margin: 8px 0 0; font-size: 14.5px; color: #FFB3A7; }
+.done-card { display: none; padding: 16px 18px; border-radius: 18px; background: rgba(111,224,165,.12); box-shadow: inset 0 0 0 1.5px rgba(111,224,165,.35); }
+.done-card strong { display: block; font-family: var(--display); font-weight: 700; font-size: 21px; }
+.done-card p { margin: 2px 0 12px; color: var(--soft); font-size: 15.5px; }
+.done-card .acts { display: flex; flex-wrap: wrap; gap: 8px; }
+.done-card .btn { font-size: 15px; padding: 10px 15px 8px; box-shadow: none; }
+.done-card .ghost { background: rgba(255,255,255,.1); color: #fff; }
 form.ok { display: none; }
-form.ok + .done { display: block; animation: pop .5s cubic-bezier(.3,1.5,.5,1); }
+form.ok + .done-card { display: block; animation: rise .5s ease; }
 
-/* Phone playing a recording of the real app */
-.spot { display: flex; justify-content: center; }
-.glow { position: relative; }
-.glow::before { content: ""; position: absolute; inset: -14px; border-radius: 60px; filter: blur(26px); z-index: -1; animation: hue 7s linear infinite, breathe 3.4s ease-in-out infinite alternate; }
-@keyframes hue { 0%, 100% { background: #5CC6D3; } 20% { background: #7FE0B5; } 40% { background: #F2C94C; } 60% { background: #FF9A7A; } 80% { background: #9AD8F0; } }
-@keyframes breathe { from { opacity: .32; } to { opacity: .6; } }
-.phone { position: relative; width: 300px; aspect-ratio: 390 / 844; box-sizing: content-box; padding: 10px; border-radius: 46px; background: #050807; box-shadow: 0 0 0 1.5px #2a3a35, 0 50px 90px -30px rgba(0,0,0,.65); }
-.phone video, .phone img { display: block; width: 100%; height: 100%; border-radius: 36px; object-fit: cover; background: var(--night); }
+/* ---------- The phone: the app handling each annoyance ---------- */
+.spot { display: flex; justify-content: center; opacity: 0; animation: rise .9s cubic-bezier(.2,.8,.2,1) .35s forwards; }
+.phone { position: relative; width: 300px; height: 622px; padding: 9px; border-radius: 46px; background: #050807; box-shadow: 0 0 0 1.5px #2a3a35, 0 60px 100px -40px rgba(0,0,0,.8), 0 0 120px -30px rgba(111,224,165,.25); }
+.phone::before { content: ""; position: absolute; top: 19px; left: 50%; width: 18px; height: 18px; margin-left: -9px; border-radius: 50%; background: #050807; box-shadow: inset 0 0 0 4px #121816; z-index: 9; }
+.screen { position: relative; width: 100%; height: 100%; border-radius: 38px; overflow: hidden; background: var(--a-bg); color: var(--a-text); font-size: 13px; }
+.sbar { display: flex; justify-content: space-between; align-items: center; height: 40px; padding: 12px 24px 0; font-size: 12.5px; font-weight: 600; }
+.sbar i { width: 15px; height: 8px; border-radius: 2px; border: 1.5px solid currentColor; position: relative; }
+.sbar i::after { content: ""; position: absolute; inset: 1px 3px 1px 1px; background: currentColor; border-radius: 1px; }
+/* The edge glow the app shows when the AI taps Approve for you (ai-glow.tsx colours) */
+.screen::after { content: ""; position: absolute; inset: 0; border-radius: 38px; pointer-events: none; opacity: 0; box-shadow: inset 0 0 0 3px #7FE0B5, inset 0 0 26px rgba(127,224,181,.7); transition: opacity .4s ease; z-index: 8; }
+.screen.glow::after { opacity: 1; animation: edge 2.4s linear infinite; }
+@keyframes edge { 0%, 100% { box-shadow: inset 0 0 0 3px #5CC6D3, inset 0 0 26px rgba(92,198,211,.7); } 25% { box-shadow: inset 0 0 0 3px #7FE0B5, inset 0 0 26px rgba(127,224,181,.7); } 50% { box-shadow: inset 0 0 0 3px #F2C94C, inset 0 0 26px rgba(242,201,76,.65); } 75% { box-shadow: inset 0 0 0 3px #FF9A7A, inset 0 0 26px rgba(255,154,122,.65); } }
 
-footer { padding: 0 0 26px; font-size: 14.5px; color: var(--soft-2); }
+.scene { position: absolute; left: 0; right: 0; top: 40px; bottom: 0; padding: 6px 14px 14px; display: flex; flex-direction: column; gap: 10px; transition: opacity .45s ease, transform .45s ease; }
+.scene.out { opacity: 0; transform: translateY(-8px); }
+.scene.in { animation: scenein .5s cubic-bezier(.2,.8,.2,1); }
+@keyframes scenein { from { opacity: 0; transform: translateY(10px); } }
+.live { display: flex; justify-content: center; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--a-ok); }
+.live .dot { background: var(--a-ok); width: 6px; height: 6px; }
+.who { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.lead { width: 50px; height: 50px; border-radius: 50%; display: grid; place-items: center; background: var(--a-surface-2); color: var(--a-text); margin: 4px 0 4px; }
+.lead .ms { font-size: 24px; }
+.lead.accent { background: #16343A; color: #7FD6E0; }
+.lead.secure { background: #1E2523; color: #C9D2CE; }
+.lead.vip { background: rgba(196,160,224,.16); color: #CDB0E6; }
+.who b { font-family: var(--display); font-weight: 700; font-size: 20px; line-height: 1.1; letter-spacing: -.01em; }
+.who small { font-size: 12px; color: var(--a-muted); }
+.tags { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; margin-top: 4px; }
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 600; padding: 3px 8px 2px; border-radius: 999px; background: var(--a-surface-2); color: var(--a-muted); }
+.tag .ms { font-size: 12px; }
+.tag.ok { background: rgba(86,208,140,.14); color: var(--a-ok); }
+.tag.vip { background: rgba(196,160,224,.16); color: #CDB0E6; }
+.status { border-radius: 16px; background: var(--a-surface); padding: 10px 12px; display: flex; flex-direction: column; gap: 4px; }
+.strip { display: flex; justify-content: space-between; gap: 4px; font-size: 10.5px; color: var(--a-muted); }
+.strip span { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+.strip span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--a-faint); }
+.strip span.past::before { background: var(--a-muted); }
+.strip span.cur { color: var(--a-text); font-weight: 600; }
+.strip span.cur::before { background: var(--a-ok); }
+.status b { font-family: var(--display); font-weight: 700; font-size: 15px; line-height: 1.2; }
+.status small { font-size: 11.5px; color: var(--a-muted); }
+.feed { display: flex; flex-direction: column; gap: 7px; }
+.bub { max-width: 86%; padding: 7px 10px 6px; border-radius: 14px; font-size: 13px; line-height: 1.35; font-weight: 500; animation: pop .35s cubic-bezier(.3,1.5,.5,1); }
+.bub.caller { align-self: flex-start; background: var(--a-surface-2); border-bottom-left-radius: 4px; }
+.bub.ai { align-self: flex-end; background: var(--lagoon); color: var(--a-bg); border-bottom-right-radius: 4px; }
+.typing { align-self: flex-end; display: flex; gap: 3px; padding: 9px 11px; border-radius: 14px; background: rgba(92,198,211,.22); animation: pop .3s ease; }
+.typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--lagoon); animation: blink 1s infinite; }
+.typing i:nth-child(2) { animation-delay: .15s; } .typing i:nth-child(3) { animation-delay: .3s; }
+@keyframes blink { 0%, 80%, 100% { opacity: .25; } 40% { opacity: 1; } }
+@keyframes pop { from { opacity: 0; transform: translateY(6px) scale(.97); } }
+.result { position: absolute; left: 12px; right: 12px; bottom: 14px; display: flex; gap: 10px; align-items: center; padding: 11px 12px; border-radius: 16px; background: #E9F2EE; color: var(--ink); box-shadow: 0 16px 30px -12px rgba(0,0,0,.7); transform: translateY(140%); transition: transform .5s cubic-bezier(.3,1.4,.5,1); }
+.result.show { transform: none; }
+.result .ic { width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; background: var(--neem); color: var(--mint); flex: none; }
+.result small { display: block; font-size: 11px; color: var(--muted); }
+.result strong { display: block; font-size: 13.5px; line-height: 1.25; font-weight: 600; }
+
+/* Gate and home help scenes */
+.apphead { display: flex; align-items: center; gap: 8px; padding: 4px 2px 0; font-family: var(--display); font-weight: 700; font-size: 17px; }
+.apphead .logo { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; font-family: var(--body); font-size: 12px; font-weight: 700; }
+.card { border-radius: 18px; background: var(--a-surface); padding: 14px; display: flex; flex-direction: column; gap: 8px; }
+.card .k { font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--a-muted); }
+.card b { font-family: var(--display); font-weight: 700; font-size: 18px; line-height: 1.15; }
+.card p { margin: 0; font-size: 13px; color: var(--a-muted); line-height: 1.4; }
+.visitor { display: flex; align-items: center; gap: 10px; }
+.visitor .av { width: 40px; height: 40px; border-radius: 12px; background: #FC8019; color: #fff; display: grid; place-items: center; font-weight: 700; }
+.acts2 { display: flex; gap: 8px; margin-top: 4px; }
+.acts2 span { flex: 1; text-align: center; padding: 9px 0 7px; border-radius: 12px; font-weight: 600; font-size: 13.5px; background: var(--a-surface-2); color: var(--a-muted); transition: all .3s ease; }
+.acts2 .yes { background: rgba(86,208,140,.16); color: var(--a-ok); }
+.acts2 .yes.pressed { background: var(--a-ok); color: var(--a-bg); transform: scale(.96); }
+.stamp { align-self: flex-start; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; font-weight: 700; padding: 4px 9px 3px; border-radius: 999px; background: rgba(111,224,165,.14); color: var(--mint-ink); animation: pop .35s ease; }
+.stamp .ms { font-size: 13px; }
+.chips2 { display: flex; flex-wrap: wrap; gap: 6px; }
+.chips2 span { padding: 6px 10px 5px; border-radius: 999px; background: var(--a-surface-2); font-size: 12.5px; font-weight: 600; animation: pop .35s ease backwards; }
+.chips2 span:nth-child(2) { animation-delay: .1s; } .chips2 span:nth-child(3) { animation-delay: .2s; }
+.clock { font-family: var(--display); font-weight: 700; font-size: 40px; letter-spacing: -.02em; line-height: 1; text-align: center; margin: 8px 0 2px; font-variant-numeric: tabular-nums; }
+.clock + small { display: block; text-align: center; font-size: 12px; color: var(--a-muted); }
+
+footer.wrap { padding-bottom: 24px; font-size: 14.5px; color: var(--soft-2); }
 footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(255,255,255,.35); }
 
-@media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) {
+  .grid { grid-template-columns: 1fr; }
+  .spot { order: 3; }
+}
 @media (max-width: 520px) {
   body { font-size: 17px; }
+  header .pill { display: none; }
   .row { flex-direction: column; }
-  .foot .btn { width: 100%; }
-  .phone { width: 260px; }
+  .under { flex-wrap: wrap; }
+  .under .btn { width: 100%; order: 3; }
+  .phone { width: 284px; height: 590px; }
 }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .001s !important; animation-iteration-count: 1 !important; transition-duration: .001s !important; }
@@ -131,35 +225,43 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
 </style>
 </head>
 <body>
-<div class="toran" id="toran"></div>
-<header class="wrap"><span class="mark">your<b></b>ea</span></header>
+<header class="wrap">
+  <span class="mark">your<b></b>ea</span>
+  <span class="pill"><span class="dot"></span>Early access · Android</span>
+</header>
 
 <main>
   <div class="wrap grid">
     <div>
-      <span class="pill"><span class="live"></span>Early access · Android</span>
-      <h1 aria-label="If I don’t pick up, my AI will.">
-        <span class="word" style="animation-delay:.15s">If</span> <span class="word" style="animation-delay:.22s">I</span> <span class="word" style="animation-delay:.29s">don’t</span> <span class="word" style="animation-delay:.36s">pick</span> <span class="word" style="animation-delay:.43s">up,</span>
-        <span class="l2"><span class="word" style="animation-delay:.65s">my</span> <span class="word" style="animation-delay:.72s">AI</span> <span class="word" style="animation-delay:.79s">will.</span></span>
-      </h1>
-      <p class="lede">your·ea answers calls on your own number when you can’t: spam, the gate, missed callbacks. It tells you only what matters.</p>
+      <h1><span>Daily annoyances,</span><span>handled.</span></h1>
+      <p class="lede">An AI on your own number. It deals with these so you don’t have to, and tells you only what matters.</p>
+
+      <ol class="ledger" id="ledger">
+        <li><span class="box"><span class="ms">check</span></span><span class="what"><s>“Your KYC expires today” scam calls</s></span><span class="how">Ended, and the number blocked.</span></li>
+        <li><span class="box"><span class="ms">check</span></span><span class="what"><s>Delivery riders who can’t find your flat</s></span><span class="how">Told the block, the lift and where to leave it.</span></li>
+        <li><span class="box"><span class="ms">check</span></span><span class="what"><s>Approving the gate for every delivery</s></span><span class="how">Approved on MyGate when it matches your order.</span></li>
+        <li><span class="box"><span class="ms">check</span></span><span class="what"><s>Calls you missed</s></span><span class="how">It calls back, then sets you a reminder.</span></li>
+        <li><span class="box"><span class="ms">check</span></span><span class="what"><s>The maid running late</s></span><span class="how">A heads-up, with backup options ready.</span></li>
+        <li><span class="box"><span class="ms">check</span></span><span class="what"><s>Family calling when it’s urgent</s></span><span class="how">Put straight through to you.</span></li>
+      </ol>
 
       <form id="wl" novalidate>
         <div class="row">
           <input name="name" type="text" autocomplete="given-name" required maxlength="80" placeholder="Your name" aria-label="Your name">
           <div class="tel"><span>+91</span><input name="phone" type="tel" inputmode="tel" autocomplete="tel-national" required placeholder="WhatsApp number" aria-label="WhatsApp number"></div>
         </div>
-        <div class="foot">
+        <div class="under">
           <div class="seg" role="radiogroup" aria-label="Your phone">
             <label><input type="radio" name="device" value="android" checked><span>Android</span></label>
             <label><input type="radio" name="device" value="iphone"><span>iPhone</span></label>
           </div>
+          <span style="flex:1"></span>
           <button class="btn" type="submit" id="go">Join the waitlist</button>
         </div>
         <div class="hp" aria-hidden="true"><input name="website" type="text" tabindex="-1" autocomplete="off"></div>
         <p class="err" id="err" role="alert"></p>
       </form>
-      <div class="done" aria-live="polite">
+      <div class="done-card" aria-live="polite">
         <strong id="doneT">You’re in line.</strong>
         <p>We’ll message you on WhatsApp when it’s your turn.</p>
         <div class="acts">
@@ -170,38 +272,121 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     </div>
 
     <div class="spot">
-      <div class="glow"><div class="phone">
-        <video src="app.mp4" poster="app.jpg" autoplay muted loop playsinline aria-label="Recording of the your·ea app: its AI handling a scam call, a gate delivery, a late maid and an urgent call from family"></video>
-      </div></div>
+      <p class="sr">The phone shows your·ea handling each annoyance in the list, one after another.</p>
+      <div class="phone" aria-hidden="true">
+        <div class="screen" id="screen">
+          <div class="sbar"><span>9:41</span><i></i></div>
+          <div class="scene" id="scene"></div>
+          <div class="result" id="result"><span class="ic"><span class="ms" id="rIc">block</span></span><div><small>your·ea · now</small><strong id="rText"></strong></div></div>
+        </div>
+      </div>
     </div>
   </div>
 </main>
 
-<footer class="wrap">Made in Bengaluru by <a href="https://akshaychugh.xyz">Akshay Chugh</a></footer>
+<footer class="wrap">Made with ❤️ by <a href="https://akshaychugh.xyz">Akshay Chugh</a></footer>
 
 <script>
 (() => {
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
+  const GREET = 'Hi, I’m Akshay’s AI assistant. How can I help?';
 
-  // Toran across the top
-  const toran = $('toran');
-  function buildToran(drop) {
-    const w = toran.clientWidth;
-    const count = Math.max(9, Math.min(25, Math.round(w / 58)));
-    const sag = Math.min(46, w * 0.05), lift = -4, margin = w * 0.03;
-    const at = x => { const k = (x - w / 2) / (w * 0.526); return lift + sag * (1 - k * k); };
-    const xs = Array.from({ length: count }, (_, i) => margin + (i * (w - 2 * margin)) / (count - 1));
-    let d = `M -12 ${at(-12)}`;
-    for (let x = 0; x <= w + 12; x += 12) d += ` L ${x} ${at(x)}`;
-    const mid = (count - 1) / 2;
-    toran.innerHTML = `<svg viewBox="0 0 ${w} 110" preserveAspectRatio="none"><path d="${d}"/></svg>` + xs.map((x, i) => {
-      const leaf = i % 2 === 1;
-      const delay = drop ? 0.25 + Math.abs(i - mid) * 0.04 : 0;
-      return `<span class="bead${leaf ? ' leaf' : ''}" style="left:${x}px;top:${at(x)}px;animation-delay:${delay}s"><i style="animation-delay:${-(i % 3) * 0.9}s"><span class="${leaf ? 'leafy' : 'flower'}"></span></i></span>`;
-    }).join('');
+  // One scene per ledger row, in the same order. Calls use the app's Live screen; the gate and home help use its cards.
+  const SCENES = [
+    { kind: 'call', name: '+91 99••• ••612', sub: 'Unknown number', lead: ['shield', 'secure'], tags: [['Unknown'], ['No matching order', '', 'shield']],
+      status: ['Greeting the caller', 'Finding out why they called', 'Handling a scam call'], purpose: 'Says it’s about KYC',
+      lines: [['ai', GREET], ['caller', 'Sir, your KYC expires today. Share the OTP to keep your account active.'], ['ai', 'I can’t share any codes or account details. Goodbye.']],
+      result: ['block', 'Scam ended · number blocked'] },
+    { kind: 'call', name: 'Swiggy rider', sub: '+91 91••• ••789', lead: ['shopping_bag', 'accent'], tags: [['Delivery & service'], ['Swiggy order matched', 'ok']],
+      status: ['Greeting the caller', 'Finding out why they called', 'Checking your Swiggy order'], purpose: 'Swiggy delivery, at the gate',
+      lines: [['ai', GREET], ['caller', 'Hi, Swiggy here. I’m at the gate, which block?'], ['ai', 'Block D, lift 2. Please leave it at the door.']],
+      result: ['check_circle', 'Drop note shared with the rider'] },
+    { kind: 'gate' },
+    { kind: 'call', label: 'Your AI called back', name: 'Ramesh (plumber)', sub: 'You missed his call at 2:10', lead: ['call', ''], tags: [['Known'], ['Missed call']],
+      status: ['Greeting the caller', 'Finding out why they called', 'Taking a message'], purpose: 'Returning your missed call', msg: true,
+      lines: [['ai', 'Hi Ramesh, I’m Akshay’s AI assistant. You called earlier?'], ['caller', 'Yes, I can come tomorrow at 11 to fix the tap.'], ['ai', 'Great, tomorrow at 11. I’ll remind him.']],
+      result: ['alarm', 'Reminder set · tomorrow 10:45'] },
+    { kind: 'help' },
+    { kind: 'call', name: 'Mom', sub: '+91 98••• ••001', lead: ['star', 'vip'], tags: [['VIP', 'vip', 'star']],
+      status: ['Greeting the caller', 'Finding out why they called', 'Connecting you…'], purpose: 'Urgent', transfer: true,
+      lines: [['ai', GREET], ['caller', 'It’s urgent, please put me through.'], ['ai', 'Connecting you now.']],
+      result: ['call', 'Putting Mom through to you'] },
+  ];
+
+  const scene = $('scene'), screen = $('screen'), result = $('result'), rows = [...$('ledger').children];
+  let tick = null;
+
+  function showResult([icon, text]) { $('rIc').textContent = icon; $('rText').textContent = text; result.classList.add('show'); }
+
+  async function playCall(s) {
+    const strip = ['Greeting', 'Asking who', s.transfer ? 'Connecting' : 'Handling', 'Message'];
+    scene.innerHTML = `
+      <div class="live"><span class="dot"></span><span id="lv">${s.label ? esc(s.label) : 'Live · 0:00'}</span></div>
+      <div class="who"><span class="lead ${s.lead[1]}"><span class="ms">${s.lead[0]}</span></span><b>${esc(s.name)}</b><small>${esc(s.sub)}</small>
+        <div class="tags">${s.tags.map(([t, tone = '', ic]) => `<span class="tag ${tone}">${ic ? `<span class="ms">${ic}</span>` : ''}${esc(t)}</span>`).join('')}</div></div>
+      <div class="status"><div class="strip" id="strip">${strip.map(t => `<span>${t}</span>`).join('')}</div><b id="st">${esc(s.status[0])}</b><small>${esc(s.purpose)}</small></div>
+      <div class="feed" id="feed"></div>`;
+    const t0 = Date.now();
+    if (!s.label) tick = setInterval(() => { const n = Math.floor((Date.now() - t0) / 1000) + 3; $('lv').textContent = `Live · 0:${String(n).padStart(2, '0')}`; }, 250);
+    const stage = i => { [...$('strip').children].forEach((el, j) => el.className = j === i ? 'cur' : j < i ? 'past' : ''); $('st').textContent = s.status[Math.min(i, 2)]; };
+    const say = (who, text) => $('feed').insertAdjacentHTML('beforeend', `<div class="bub ${who}">${esc(text)}</div>`);
+    stage(0); say(...s.lines[0]);
+    await wait(1500); stage(1); say(...s.lines[1]);
+    await wait(1300); stage(s.msg ? 3 : 2);
+    if (!reduce) { $('feed').insertAdjacentHTML('beforeend', '<div class="typing"><i></i><i></i><i></i></div>'); await wait(850); $('feed').querySelector('.typing')?.remove(); }
+    say(...s.lines[2]);
+    await wait(1100); showResult(s.result);
+    await wait(2200);
   }
-  buildToran(true);
-  let rt; addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => buildToran(false), 150); });
+
+  async function playGate() {
+    scene.innerHTML = `
+      <div class="apphead"><span class="logo" style="background:#2F6FEB;color:#fff">MG</span>MyGate</div>
+      <div class="card"><span class="k">At your gate</span>
+        <div class="visitor"><span class="av">S</span><div><b>Swiggy delivery</b><p>Main gate · just now</p></div></div>
+        <p>A delivery is waiting at the gate. Approve entry?</p>
+        <div class="acts2"><span>Deny</span><span class="yes" id="yes">Approve</span></div>
+        <div id="gst"></div>
+      </div>`;
+    await wait(1800);
+    $('yes').classList.add('pressed'); screen.classList.add('glow');
+    await wait(500);
+    $('gst').innerHTML = '<span class="stamp"><span class="ms">check_circle</span>Approved by your AI</span>';
+    await wait(900); showResult(['door_front', 'Gate approved · matches your Swiggy order']);
+    await wait(1600); screen.classList.remove('glow');
+    await wait(700);
+  }
+
+  async function playHelp() {
+    scene.innerHTML = `
+      <div class="apphead"><span class="logo" style="background:var(--neem);color:var(--mint)">ea</span>Home help</div>
+      <div class="clock">8:30</div><small>Sunita is usually in by 8:00</small>
+      <div class="card"><span class="k">Not at the gate yet</span><b>Sunita is running late</b><p>No entry on MyGate this morning.</p><div id="hst"></div></div>`;
+    await wait(1700);
+    $('hst').innerHTML = '<p style="margin:2px 0 8px;color:var(--a-text)">Want a backup for today?</p><div class="chips2"><span>Snabbit</span><span>Pronto</span><span>Urban Company</span></div>';
+    await wait(1500); showResult(['cleaning_services', 'Heads-up sent · backups ready']);
+    await wait(2200);
+  }
+
+  async function loop() {
+    for (let i = 0; ; i = (i + 1) % SCENES.length) {
+      if (i === 0) { rows.forEach(r => r.classList.remove('done', 'now')); await wait(300); }
+      rows.forEach((r, j) => r.classList.toggle('now', j === i));
+      result.classList.remove('show');
+      scene.classList.remove('out'); scene.classList.remove('in'); void scene.offsetWidth; scene.classList.add('in');
+      const s = SCENES[i];
+      await (s.kind === 'call' ? playCall(s) : s.kind === 'gate' ? playGate() : playHelp());
+      clearInterval(tick);
+      rows[i].classList.remove('now'); rows[i].classList.add('done');
+      if (reduce) { rows.forEach(r => r.classList.add('done')); return; }
+      scene.classList.add('out'); result.classList.remove('show');
+      await wait(450);
+    }
+  }
+  setTimeout(loop, reduce ? 0 : 900);
 
   // Waitlist
   const SUPABASE = 'https://vapepnpqvdtcyppzyata.supabase.co';
@@ -209,12 +394,11 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   const ref = (new URLSearchParams(location.search).get('ref') || '').slice(0, 60);
   const form = $('wl'), err = $('err'), go = $('go');
   const shareUrl = 'https://yourea.akshaychugh.xyz/?ref=friend';
-  $('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent('your·ea is an AI that picks up calls on your own number when you can’t. Join the waitlist: ' + shareUrl);
+  $('shareWa').href = 'https://wa.me/?text=' + encodeURIComponent('Daily annoyances, handled. your·ea is an AI on your own number. Join the waitlist: ' + shareUrl);
   $('copyLink').onclick = async e => {
     const b = e.currentTarget;
     try { await navigator.clipboard.writeText(shareUrl); b.textContent = 'Copied ✓'; } catch { b.textContent = shareUrl; }
   };
-
   form.addEventListener('submit', async e => {
     e.preventDefault();
     err.textContent = '';
@@ -225,7 +409,6 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     if (digits.length === 11 && digits.startsWith('0')) digits = digits.slice(1);
     if (!name) { err.textContent = 'Add your name.'; form.name.focus(); return; }
     if (!/^[6-9]\d{9}$/.test(digits)) { err.textContent = 'Enter a 10-digit Indian mobile number.'; form.phone.focus(); return; }
-
     go.disabled = true; go.textContent = 'Joining…';
     try {
       const r = await fetch(SUPABASE + '/rest/v1/rpc/join_waitlist_v2', {
