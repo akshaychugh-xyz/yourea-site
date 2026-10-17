@@ -255,21 +255,25 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   header .mark { font-size: 23px; }
   .eyebrow { font-size: 15px; margin-bottom: 8px; }
   h1 { font-size: clamp(31px, 9vw, 38px); }
-  /* The chips say what the lede says, so phones skip the lede and give the room to the phone. */
-  .lede { display: none; }
+  .lede { font-size: 16px; margin-top: 12px; }
   .spot { margin: 18px 0 28px; }
   .cap { display: none; }
   .chips { margin-bottom: 14px; }
-  /* Full-width screen, as tall as the space left above the Join button (set in JS as --ph). */
-  .phone { width: 100%; height: var(--ph, 520px); padding: 7px; border-radius: 34px; }
-  .phone::before { top: 15px; width: 14px; height: 14px; margin-left: -7px; }
-  .screen, .screen::after { border-radius: 28px; }
+  /* A real phone shape: height is what fits under the chips above the Join button, width follows (set in JS). */
+  .spot { scroll-margin-top: 10px; }
+  .phone { align-self: center; width: var(--pw, 250px); height: var(--ph, 520px); padding: 8px; border-radius: 40px; }
+  .phone::before { top: 16px; width: 14px; height: 14px; margin-left: -7px; }
+  .screen, .screen::after { border-radius: 32px; }
   .sbar { height: 32px; padding-top: 8px; font-size: 12px; }
   .scene { top: 32px; gap: 8px; padding: 4px 14px 12px; }
-  .lead { display: none; }
-  .who b { font-size: 19px; }
+  .lead { width: 40px; height: 40px; margin: 0 0 2px; }
+  .lead .ms { font-size: 20px; }
+  .who b { font-size: 17px; }
+  .tag { font-size: 10.5px; }
+  .strip { display: none; }
+  .status b { font-size: 14px; }
   .who small, .status small { display: none; }
-  .bub { font-size: 13.5px; max-width: 82%; }
+  .bub { font-size: 12.5px; max-width: 88%; }
   .clock { font-size: 34px; margin-top: 2px; }
   .result { bottom: 10px; }
   /* When the result lands, the caller details fold away so the last reply stays visible above it. */
@@ -516,8 +520,10 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   const phoneEl = document.querySelector('.phone');
   function fit() {
     if (innerWidth > 900) { phoneEl.style.removeProperty('--ph'); return; }
-    const top = phoneEl.getBoundingClientRect().top + scrollY;
-    phoneEl.style.setProperty('--ph', Math.round(Math.max(300, Math.min(620, innerHeight - top - 88))) + 'px');
+    const chipsH = document.querySelector('.chipbar').offsetHeight;
+    const h = Math.round(Math.max(420, Math.min(600, innerHeight - chipsH - 88 - 24)));
+    phoneEl.style.setProperty('--ph', h + 'px');
+    phoneEl.style.setProperty('--pw', Math.min(300, Math.round(h * 0.49)) + 'px');
   }
   fit();
   document.fonts?.ready.then(fit);
