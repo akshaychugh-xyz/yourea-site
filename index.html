@@ -342,8 +342,8 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
         <p class="err" id="err" role="alert"></p>
       </form>
       <div class="done-card" aria-live="polite">
-        <strong id="doneT">You’re in line.</strong>
-        <p>We’ll message you on WhatsApp when it’s your turn.</p>
+        <strong id="doneT">Thanks, you’re on the list.</strong>
+        <p>We’ll get back to you on WhatsApp shortly.</p>
         <div class="acts">
           <a class="btn" id="shareWa" href="#" target="_blank" rel="noopener">Share on WhatsApp</a>
           <button class="btn ghost" type="button" id="copyLink">Copy link</button>
@@ -574,7 +574,7 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
       const out = await r.json().catch(() => null);
       if (!r.ok || !out) throw new Error((out && out.message) || 'HTTP ' + r.status);
       const first = name.split(/\s+/)[0];
-      $('doneT').textContent = out.status === 'already' ? `${first}, you’re already in line (#${out.position}).` : `You’re #${out.position} in line, ${first}.`;
+      $('doneT').textContent = `Thanks, ${first}, you’re on the list.`;
       form.classList.add('ok');
       mcta.remove();
       $('hcta').remove();
