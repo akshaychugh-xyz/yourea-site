@@ -88,6 +88,10 @@ h1 span:nth-child(2) { color: var(--mint); animation-delay: .12s; }
 .what { font-family: var(--display); font-weight: 650; font-size: clamp(18px, 1.55vw, 21px); line-height: 1.25; color: #fff; transition: color .4s ease; }
 .what s { text-decoration: none; background: linear-gradient(var(--mint), var(--mint)) no-repeat 0 58% / 0% 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; transition: background-size .55s cubic-bezier(.6,0,.3,1); }
 .how { grid-column: 2; font-size: 14.5px; line-height: 1.35; color: var(--soft-2); max-height: 0; opacity: 0; overflow: hidden; transition: max-height .4s ease, opacity .4s ease, margin .4s ease; }
+.ledger li { cursor: pointer; border-radius: 10px; transition: background .2s ease; }
+.ledger li:hover { background: rgba(255,255,255,.04); }
+.ledger li:hover .what { color: #fff; }
+.ledger li:focus-visible { outline: 2px solid var(--mint); outline-offset: 2px; }
 .ledger li.now .box { box-shadow: inset 0 0 0 1.5px var(--mint); }
 .ledger li.now .box::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--mint); animation: pulse 1s ease-in-out infinite alternate; }
 @keyframes pulse { from { transform: scale(.6); opacity: .6; } to { transform: scale(1); opacity: 1; } }
@@ -291,7 +295,6 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-  const wait = ms => new Promise(r => setTimeout(r, reduce ? 0 : ms));
   const GREET = 'Hi, I’m Akshay’s AI assistant. How can I help?';
 
   // One scene per ledger row, in the same order. Calls use the app's Live screen; the gate and home help use its cards.
@@ -317,7 +320,9 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
   ];
 
   const scene = $('scene'), screen = $('screen'), result = $('result'), rows = [...$('ledger').children];
-  let tick = null;
+  let tick = null, run = 0;
+  const STOP = Symbol('stop');
+  const wait = ms => { const mine = run; return new Promise((res, rej) => setTimeout(() => (mine === run ? res() : rej(STOP)), reduce ? 0 : ms)); };
 
   function showResult([icon, text]) { $('rIc').textContent = icon; $('rText').textContent = text; result.classList.add('show'); }
 
@@ -371,22 +376,43 @@ footer a { color: #fff; text-underline-offset: 3px; text-decoration-color: rgba(
     await wait(2200);
   }
 
-  async function loop() {
-    for (let i = 0; ; i = (i + 1) % SCENES.length) {
-      if (i === 0) { rows.forEach(r => r.classList.remove('done', 'now')); await wait(300); }
-      rows.forEach((r, j) => r.classList.toggle('now', j === i));
-      result.classList.remove('show');
-      scene.classList.remove('out'); scene.classList.remove('in'); void scene.offsetWidth; scene.classList.add('in');
-      const s = SCENES[i];
-      await (s.kind === 'call' ? playCall(s) : s.kind === 'gate' ? playGate() : playHelp());
-      clearInterval(tick);
-      rows[i].classList.remove('now'); rows[i].classList.add('done');
-      if (reduce) { rows.forEach(r => r.classList.add('done')); return; }
-      scene.classList.add('out'); result.classList.remove('show');
-      await wait(450);
+  // A newer loop (a click on a row) bumps `run`; every wait() of the older one then rejects with STOP.
+  async function loop(start = 0) {
+    const mine = ++run;
+    clearInterval(tick); screen.classList.remove('glow');
+    try {
+      for (let i = start, first = true; ; i = (i + 1) % SCENES.length, first = false) {
+        if (i === 0 && !first) { rows.forEach(r => r.classList.remove('done', 'now')); await wait(300); }
+        rows.forEach((r, j) => { r.classList.toggle('now', j === i); r.classList.toggle('done', j < i); });
+        await playScene(i);
+        if (reduce) return;
+      }
+    } catch (e) {
+      if (e !== STOP || mine === run) throw e;
     }
   }
-  setTimeout(loop, reduce ? 0 : 900);
+
+  async function playScene(i) {
+    result.classList.remove('show');
+    scene.classList.remove('out'); scene.classList.remove('in'); void scene.offsetWidth; scene.classList.add('in');
+    const s = SCENES[i];
+    await (s.kind === 'call' ? playCall(s) : s.kind === 'gate' ? playGate() : playHelp());
+    clearInterval(tick);
+    rows[i].classList.remove('now'); rows[i].classList.add('done');
+    if (reduce) return;
+    scene.classList.add('out'); result.classList.remove('show');
+    await wait(450);
+  }
+
+  // Click (or Enter / Space on) a row to jump the phone to it; the loop carries on from there.
+  rows.forEach((r, i) => {
+    r.tabIndex = 0;
+    r.setAttribute('role', 'button');
+    r.setAttribute('aria-label', `Show how it handles: ${r.querySelector('.what').textContent}`);
+    r.addEventListener('click', () => loop(i));
+    r.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); loop(i); } });
+  });
+  setTimeout(() => { if (!run) loop(0); }, reduce ? 0 : 900);
 
   // Waitlist
   const SUPABASE = 'https://vapepnpqvdtcyppzyata.supabase.co';
